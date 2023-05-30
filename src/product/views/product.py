@@ -12,6 +12,7 @@ class CreateProductView(generic.TemplateView):
         variants = Variant.objects.filter(active=True).values('id', 'title')
         context['product'] = True
         context['variants'] = list( variants.all() )
+        
         return context
 
 class ProductListView(generic.TemplateView):

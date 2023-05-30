@@ -14,6 +14,10 @@ const CreateProduct = (props) => {
             tags: []
         }
     ])
+    const [productData, setProductData] = useState({
+        productName: "", // Initialize the productName property with an empty string
+        // other properties
+      });
     console.log(typeof props.variants)
     // handle click event of the Add button
     const handleAddClick = () => {
@@ -77,7 +81,8 @@ const CreateProduct = (props) => {
     // Save product
     let saveProduct = (event) => {
         event.preventDefault();
-        // TODO : write your code here to save the product
+        productData.productName = event.target.elements.productName.value;
+        console.log(productData);
     }
 
 
@@ -90,7 +95,7 @@ const CreateProduct = (props) => {
                             <div className="card-body">
                                 <div className="form-group">
                                     <label htmlFor="">Product Name</label>
-                                    <input type="text" placeholder="Product Name" className="form-control"/>
+                                    <input type="text" name='productName' placeholder="Product Name" className="form-control"/>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="">Product SKU</label>
