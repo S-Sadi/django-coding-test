@@ -18,6 +18,9 @@
                 <div class="col-md-2">
                     <select name="variant" id="" class="form-control">
                         <option selected disabled>--Select A Variant--</option>
+                        <option value="black">Black</option>
+                        <option value="orange">Orange</option>
+                        <option value="red">Red</option>
                     </select>
                 </div>
 
@@ -57,7 +60,7 @@
                     {% for product in pages %}
                     <tr>
                         <td>{{ product.id }}</td>
-                        <td>{{ product.title }} <br> Created at : {{p.created_at}}</td>
+                        <td>{{ product.title }} <br> Created at : {{product.created_at}}</td>
                         <td>{{ product.description }}</td>
                         <td>
                             {% with variant_prices=product.productvariantprice_set.all %}
