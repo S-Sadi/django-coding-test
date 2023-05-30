@@ -18,7 +18,6 @@
                 <div class="col-md-2">
                     <select name="variant" id="" class="form-control">
                         <option selected disabled>--Select A Variant--</option>
-
                     </select>
                 </div>
 
@@ -45,61 +44,41 @@
             <div class="table-response">
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Variant</th>
-                        <th width="150px">Action</th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Variant</th>
+                            <th width="150px">Action</th>
+                        </tr>
                     </thead>
-
+                    
                     <tbody>
+                    {% for product in pages %}
                     <tr>
-                        <td>1</td>
-                        <td>T-Shirt <br> Created at : 25-Aug-2020</td>
-                        <td>Quality product in low cost</td>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.title }} <br> Created at : {{p.created_at}}</td>
+                        <td>{{ product.description }}</td>
                         <td>
+                            {% with variant_prices=product.productvariantprice_set.all %}
+                            {% if variant_prices %}
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
+                                {% for variant_price in variant_prices %}
                                 <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Full
+                                    {{ variant_price.product_variant_one.variant_title }}/ {{ variant_price.product_variant_two.variant_title }}/ {{ variant_price.product_variant_three.variant_title }}
                                 </dt>
                                 <dd class="col-sm-9">
                                     <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
+                                        <dd class="col-sm-4 pb-0">Price : {{ variant_price.price }}</dd>
+                                        <dd class="col-sm-8 pb-0">InStock : {{ variant_price.stock }}</dd>
                                     </dl>
                                 </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    XL/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Full
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
-                                <dt class="col-sm-3 pb-0">
-                                    L/ Black/ Half
-                                </dt>
-                                <dd class="col-sm-9">
-                                    <dl class="row mb-0">
-                                        <dd class="col-sm-4 pb-0">Price : 200.0</dd>
-                                        <dd class="col-sm-8 pb-0">InStock : 50.</dd>
-                                    </dl>
-                                </dd>
+                                {% endfor %}
                             </dl>
+                            {% endif %}
                             <button onclick="$('#variant').toggleClass('h-auto')" class="btn btn-sm btn-link">Show more
                             </button>
+                            {% endwith %}
                         </td>
                         <td>
                             <div class="btn-group btn-group-sm">
@@ -107,6 +86,7 @@
                             </div>
                         </td>
                     </tr>
+                    {% endfor %}
                     </tbody>
 
                 </table>
@@ -117,10 +97,19 @@
         <div class="card-footer">
             <div class="row justify-content-between">
                 <div class="col-md-6">
-                    <p>Showing 1 to 10 out of 100</p>
+                    <p>Showing {{pages.start_index}} to {{ pages.end_index }} out of {{total_products}}</p>
                 </div>
                 <div class="col-md-2">
-
+                    <div class="pagination">
+                        {% if pages.has_previous %}
+                            <a href="?page={{ pages.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <span class="current-page">{{ pages.number }}</span>
+                        <span class="total-pages">of {{ pages.paginator.num_pages }}</span>
+                        {% if pages.has_next %}
+                            <a href="?page={{ pages.next_page_number }}">Next</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
